@@ -1,8 +1,8 @@
-package com.project.recrutation_valueadd.controller;
+package com.project.textAnalyzer.controller;
 
-import com.project.recrutation_valueadd.domain.Text;
-import com.project.recrutation_valueadd.domain.WordInfo;
-import com.project.recrutation_valueadd.service.TextService;
+import com.project.textAnalyzer.domain.Text;
+import com.project.textAnalyzer.domain.WordInfo;
+import com.project.textAnalyzer.service.TextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

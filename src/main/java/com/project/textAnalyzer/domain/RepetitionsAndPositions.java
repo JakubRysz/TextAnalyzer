@@ -1,4 +1,4 @@
-package com.project.recrutation_valueadd.domain;
+package com.project.textAnalyzer.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class RepetitionsAndPositions {
-
     private int repetitionCount;
     private List<Integer> positions;
-
 }

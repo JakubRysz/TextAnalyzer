@@ -1,13 +1,14 @@
-package com.project.recrutation_valueadd;
+package com.project.textAnalyzer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RecrutationValueAddApplication {
+public class TextAnalyzer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RecrutationValueAddApplication.class, args);
+
+		SpringApplication.run(TextAnalyzer.class, args);
 	}
 
 }

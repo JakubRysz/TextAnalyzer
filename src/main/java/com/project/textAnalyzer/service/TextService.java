@@ -1,10 +1,9 @@
-package com.project.recrutation_valueadd.service;
+package com.project.textAnalyzer.service;
 
-import com.project.recrutation_valueadd.domain.RepetitionsAndPositions;
-import com.project.recrutation_valueadd.domain.Text;
-import com.project.recrutation_valueadd.domain.WordInfo;
+import com.project.textAnalyzer.domain.RepetitionsAndPositions;
+import com.project.textAnalyzer.domain.Text;
+import com.project.textAnalyzer.domain.WordInfo;
 import org.springframework.stereotype.Service;
-
 import java.text.Collator;
 import java.util.*;
 

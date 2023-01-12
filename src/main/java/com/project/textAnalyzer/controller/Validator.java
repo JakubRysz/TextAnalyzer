@@ -1,6 +1,6 @@
-package com.project.recrutation_valueadd.controller;
+package com.project.textAnalyzer.controller;
 
-import com.project.recrutation_valueadd.domain.Text;
+import com.project.textAnalyzer.domain.Text;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +12,6 @@ public class Validator {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Text is null");
         }
-
     }
+
 }
