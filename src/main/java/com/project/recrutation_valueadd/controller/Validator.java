@@ -13,10 +13,5 @@ public class Validator {
                     HttpStatus.BAD_REQUEST, "Text is null");
         }
 
-        if (text.getTekst().length()<1) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Text is empty");
-        }
-
     }
 }

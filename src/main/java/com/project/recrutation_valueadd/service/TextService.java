@@ -2,7 +2,6 @@ package com.project.recrutation_valueadd.service;
 
 import com.project.recrutation_valueadd.domain.RepetitionsAndPositions;
 import com.project.recrutation_valueadd.domain.Text;
-import com.project.recrutation_valueadd.domain.TextInfo;
 import com.project.recrutation_valueadd.domain.WordInfo;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import java.util.*;
 @Service
 public class TextService {
 
-    public TextInfo analyzeText(Text text) {
+    public List<WordInfo> analyzeText(Text text) {
 
         String[] words = text.getTekst().split("[\\s\\!\"“”„\\#$%&'()*+,\\-–./:;<=>?@\\[\\\\\\]^_\s‘{|}~]+");
 
@@ -44,13 +43,14 @@ public class TextService {
     }
 
 
-    private TextInfo mapToTextInfo(Map<String, RepetitionsAndPositions> map) {
-        TextInfo textInfo = new TextInfo();
+    private List<WordInfo> mapToTextInfo(Map<String, RepetitionsAndPositions> map) {
+
+        List<WordInfo> wordInfoList = new ArrayList<>();
         for (Map.Entry<String, RepetitionsAndPositions> entry : map.entrySet()) {
-            textInfo.getWordInfoList().add(
+            wordInfoList.add(
                     new WordInfo(entry.getKey(), entry.getValue().getRepetitionCount(), entry.getValue().getPositions()));
         }
-        return textInfo;
+        return wordInfoList;
     }
 
 }
