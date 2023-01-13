@@ -1,56 +1,69 @@
 package com.project.textAnalyzer.service;
 
-import com.project.textAnalyzer.domain.RepetitionsAndPositions;
-import com.project.textAnalyzer.domain.Text;
-import com.project.textAnalyzer.domain.WordInfo;
+import com.project.textAnalyzer.model.RepetitionsAndPositions;
+import com.project.textAnalyzer.model.Text;
+import com.project.textAnalyzer.model.WordInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.text.Collator;
 import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class TextService {
 
-    public List<WordInfo> analyzeText(Text text) {
+    private int position;
+    private Map<String, RepetitionsAndPositions> wordsInfoMap;
+    private final static String SPLIT_REGEX = "(([\\p{L}\\p{N}]+,[\\p{L}\\p{N}]+)+" +
+            "|([\\p{L}\\p{N}]+(?:[-']?[\\p{L}\\p{N}]+)*))+";
 
-        String[] words = text.getTekst().split("[\\s\\!\"“”„\\#$%&'()*+,\\-–./:;<=>?@\\[\\\\\\]^_\s‘{|}~]+");
+    private final static Locale LOCALE = new Locale("pl", "PL");
 
-        Map<String, RepetitionsAndPositions> wordsInfoMap = new HashMap<>();
-        int position = 1;
 
-        for (String word : words) {
-
-            if (!wordsInfoMap.containsKey(word)) {
-                List<Integer> newPositions = new ArrayList<>();
-                newPositions.add(position);
-                RepetitionsAndPositions repetitionsAndPositions = new RepetitionsAndPositions(1, newPositions);
-                wordsInfoMap.put(word, repetitionsAndPositions);
-            } else {
-                RepetitionsAndPositions repetitionsAndPositions2 = wordsInfoMap.get(word);
-                repetitionsAndPositions2.setRepetitionCount(repetitionsAndPositions2.getRepetitionCount() + 1);
-                repetitionsAndPositions2.getPositions().add(position);
-
-                wordsInfoMap.put(word, repetitionsAndPositions2);
-            }
-            position++;
+    public List<WordInfo> analyze(Text text) {
+        wordsInfoMap = new HashMap<>();
+        position = 1;
+        Pattern pattern = Pattern.compile(SPLIT_REGEX);
+        Matcher matcher = pattern.matcher(text.getTekst());
+        while(matcher.find()) {
+            analyzeWord(matcher.group());
         }
 
-        Collator plCollator = Collator.getInstance(new Locale("pl", "PL"));
-        TreeMap<String, RepetitionsAndPositions> sorted = new TreeMap<>(plCollator);
-        sorted.putAll(wordsInfoMap);
-
-        return mapToTextInfo(sorted);
+        return mapToWordInfoList(
+                sortWordInfoMap());
     }
 
+    private void analyzeWord(String word) {
 
-    private List<WordInfo> mapToTextInfo(Map<String, RepetitionsAndPositions> map) {
+        if (wordsInfoMap.containsKey(word)) {
+            wordsInfoMap.get(word).addPosition(position);
+            position++;
+            return;
+        }
+
+        List<Integer> newPositions = new ArrayList<>();
+        newPositions.add(position);
+        RepetitionsAndPositions repetitionsAndPositions = new RepetitionsAndPositions(1, newPositions);
+        wordsInfoMap.put(word, repetitionsAndPositions);
+        position++;
+    }
+
+    private Map<String, RepetitionsAndPositions> sortWordInfoMap() {
+        Collator plCollator = Collator.getInstance(LOCALE);
+        TreeMap<String, RepetitionsAndPositions> sorted = new TreeMap<>(plCollator);
+        sorted.putAll(wordsInfoMap);
+        return sorted;
+    }
+
+    private List<WordInfo> mapToWordInfoList(Map<String, RepetitionsAndPositions> map) {
 
         List<WordInfo> wordInfoList = new ArrayList<>();
-        for (Map.Entry<String, RepetitionsAndPositions> entry : map.entrySet()) {
-            wordInfoList.add(
-                    new WordInfo(entry.getKey(), entry.getValue().getRepetitionCount(), entry.getValue().getPositions()));
-        }
+        map.forEach((key, value) -> wordInfoList.add(
+                new WordInfo(key, value.getRepetitionCount(), value.getPositions())));
         return wordInfoList;
     }
 
 }
-

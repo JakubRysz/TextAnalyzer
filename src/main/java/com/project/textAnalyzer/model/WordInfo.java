@@ -1,4 +1,4 @@
-package com.project.textAnalyzer.domain;
+package com.project.textAnalyzer.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
