@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.text.Collator;
 import java.util.*;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,16 +16,14 @@ public class TextService {
 
     private int position;
     private Map<String, RepetitionsAndPositions> wordsInfoMap;
-    private final static String SPLIT_REGEX = "(([\\p{L}\\p{N}]+,[\\p{L}\\p{N}]+)+" +
-            "|([\\p{L}\\p{N}]+(?:[-']?[\\p{L}\\p{N}]+)*))+";
-
+    private final static String REGEX = "\\b(\\p{L}+[1-9]*)+|([1-9]*\\p{L}+)+\\b";
     private final static Locale LOCALE = new Locale("pl", "PL");
 
 
     public List<WordInfo> analyze(Text text) {
         wordsInfoMap = new HashMap<>();
         position = 1;
-        Pattern pattern = Pattern.compile(SPLIT_REGEX);
+        Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(text.getTekst());
         while(matcher.find()) {
             analyzeWord(matcher.group());
